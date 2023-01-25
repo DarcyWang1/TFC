@@ -65,7 +65,7 @@ def getAllStudio(lat: float, lon: float, i: int, amount: int):
         result = list(all_stodius)
         result.sort(key=lambda s: pority(lat, lon, s))
         a = [r for r in result]
-        print(a)
+        #print(a)
         return result[i:min(amount + i, len(result))]
     return []
 
@@ -92,7 +92,7 @@ class Stodio_View(APIView):
 
     def post(self, request: HttpRequest):
         if request.user.is_staff:
-            print(request.POST)
+            #print(request.POST)
             name = request.POST.get('name', '')
             address = request.POST.get('address', None)
             latitude = request.POST.get('latitude', '')
@@ -193,7 +193,7 @@ class Image_view(APIView):
     def put(self, request: HttpRequest, studio_id):
         try:
             s = Studio.objects.get(id=studio_id)
-            # print(request.POST)
+            #print(request.POST)
             Images.objects.create(studio=s, img=request.FILES.get('image', ''))
             return HttpResponse(status=200)
         except Studio.DoesNotExist:
@@ -205,7 +205,7 @@ def get_image_by_id(request:HttpRequest, i):
     try:
         img = Images.objects.get(id=i)
         url = str(settings.BASE_DIR) +str(img.img.url)
-        print(url)
+        #print(url)
         return FileResponse(open(url,'rb'))
     except Images.DoesNotExist:
         return HttpResponse(status=404)
@@ -219,11 +219,11 @@ class check_enrolled(APIView):
         u=request.user
         try:
             d = string2date(request.GET.get('date',''))
-            print(c)
+            #print(c)
             cls = studio_class.objects.filter(id=c)
-            print(cls.values())
-            print(u)
-            print('2',enrolled.objects.filter(User=u,Class__in=cls).values())
+            #print(cls.values())
+            #print(u)
+            #print('2',enrolled.objects.filter(User=u,Class__in=cls).values())
             result = len(enrolled.objects.filter(User=u,strat__lte=d,Class__in=cls).filter(Q(end__gte=d)|Q(end=None)))>0
             return JsonResponse(result,safe=False)
         except ValueError or studio_class.DoesNotExist:
@@ -302,11 +302,11 @@ class stodio_class_view(APIView):
                 Class__in=classes)
             related_classes = studio_class.objects.filter(
                 id__in=class_instances.values('Class')).values()
-            # print(related_classes.values())
+            #print(related_classes.values())
             id_dic = {}
             for i in related_classes:
                 id_dic[i['id']] = i
-            # print(id_dic)
+            #print(id_dic)
             result = list(class_instances.values())
             for i in result:
                 #print(i)
@@ -314,15 +314,15 @@ class stodio_class_view(APIView):
             #print(result)
             '''
             ind=0
-            print(ind)
+            #print(ind)
             if request.GET.get('index','').isalnum():
                 ind=int(request.GET.get('index',''))
-            print(s)
+            #print(s)
             amount=5
-            print(ind)
+            #print(ind)
             if request.GET.get('amount','').isalnum():
                 amount=int(request.GET.get('amount',''))
-            print(s)
+            #print(s)
 
             result = get_all_class_instance(s,ind+amount)[ind:]
             
@@ -395,7 +395,7 @@ class class_edit(APIView):
     pagination_class = StandardResultsSetPagination
     page_size=10
     def post(self, request: HttpRequest):
-        print('a')
+        #print('a')
         if not request.user.is_staff:
             return HttpResponse(status=403)
         Class = request.POST.get('class_id', '')
@@ -417,12 +417,12 @@ class class_edit(APIView):
     def get(self, request: HttpRequest):
         
         s=0
-        print(s)
+        #print(s)
         if request.GET.get('index','').isalnum():
             s=int(request.GET.get('index',''))
-        print(s)
+        #print(s)
         sub = get_user_sub(request.user)
-        print('sub',sub)
+        #print('sub',sub)
         
         if request.GET.get('h','')=='':
             result = get_user_enrolled_class_instance(request.user,sub,s+self.page_size)[s:]
@@ -482,7 +482,7 @@ class GetClass_name(APIView):
     def get(self, request):
         """Get a json response of the Studio Class."""
         # try:
-        print('111');
+        #print('111');
         name_input = request.GET.get("name")
         ind = request.GET.get('index','')
         index=0
@@ -494,9 +494,9 @@ class GetClass_name(APIView):
             amount=int(ind)
         result = list(studio_class.objects.filter(name=name_input).values())
         # classes=studio_class.objects.filter(name=name_input)
-        print(result)
+        #print(result)
         # currentday= date.today()
-        # print(currentday)
+        #print(currentday)
 
         return JsonResponse({
             "status": 200,
@@ -518,15 +518,15 @@ class GetClass_time(View):
         """Get a json response of the Studio Class."""
         try:
             time_input = request.GET.get("time").replace("-", "")
-            print(type(time_input))
+            #print(type(time_input))
             result = []
             d_input = datetime.strptime(str(time_input),'%Y%m%d')
-            print(type(d_input))
-            print(d_input)
+            #print(type(d_input))
+            #print(d_input)
             # d_input = date(int(time_input[0:4]), int(time_input[4:6]),
             #                int(time_input[6:]))
             
-            print(1)
+            #print(1)
             # temp1 = Class_instance.objects.filter(Q(end__gte=time_input) | Q(end=None) | Q(start__))
             # temp2 = Class_instance.objects.filter(Q(end__gte=None) | Q(end=None))
             # for c in temp1:
@@ -569,7 +569,7 @@ class GetClass_range(View):
     def get(self, request):
         """Get a json response of the Studio Class."""
         try:
-            print(1)
+            #print(1)
             time_input = request.GET.get("time").replace('-', '')
             time_start = time_input[0:8]
             time_end = time_input[9:]
@@ -635,14 +635,14 @@ class GetStudio_name(View):
             amount=5
             if amo.isalnum():
                 amount=int(amount)
-            print(index)
-            print(Studio.objects.filter(name=name).values())
+            #print(index)
+            #print(Studio.objects.filter(name=name).values())
             result = list(Studio.objects.filter(name=name).values())
-            print(result)
-            print(min(len(result),index+amount))
-            print(len(result))
-            print(index+amount)
-            print(amo)
+            #print(result)
+            #print(min(len(result),index+amount))
+            #print(len(result))
+            #print(index+amount)
+            #print(amo)
             if min(len(result),index+amount)<index:
                 return JsonResponse({
                 "status": 200,
@@ -678,9 +678,9 @@ class GetStudio_amentities(View):
             amount=5
             if amo.isalnum():
                 amount=int(amount)
-            print(index)
+            #print(index)
             result = list(Amenity.objects.filter(type=ame).values("studio"))
-            print("result:", result)
+            #print("result:", result)
             temp2=[]
             
             for i in result:
@@ -691,7 +691,7 @@ class GetStudio_amentities(View):
             final_result=[]
             for k in temp2:
                 final_result.append(studio_serilization(k))
-            print(final_result)
+            #print(final_result)
             return JsonResponse({
                 "status": 200,
                 "message": "The current search's information is as follow:",
@@ -718,7 +718,7 @@ class GetStudio_coach(View):
             amount=5
             if amo.isalnum():
                 amount=int(amount)
-            print(index)
+            #print(index)
             coach = request.GET.get("coach")
             temp = list(studio_class.objects.filter(coach=coach))
             temp2=[];

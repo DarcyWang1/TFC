@@ -92,4 +92,10 @@
       .button:hover {
         background-color: #905e3595;
       }
+      table, th, td {
+        border: 1px solid;
+      }
+      table{
+        float:left;
+      }
       

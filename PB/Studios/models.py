@@ -403,12 +403,12 @@ def get_user_enrolled_class_instance(u,subscription:dict,amount:int, c:studio_cl
     #print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
     #print(e)
     result={}
-    print('subs',subscription)
+    #print('subs',subscription)
     for i in e:
         #print(i.studio.id)
         if i.studio.id in subscription.keys():
             result[i]=intervalIntersection(intervalIntersection(merge_intervals(e[i][1]),merge_intervals(e[i][2])),subscription[i.studio.id])
-    print('result',result)
+    #print('result',result)
         #s = subscription[i]
         #lst = []
         #for j in s:
@@ -437,13 +437,13 @@ def get_enrolled2(u):
 
 def get_user_enrolled_class_history(u,subscription:dict,amount:int, c:studio_class=None):
     e = get_enrolled2(u)
-    print(e)
+    #print(e)
     result={}
     for i in e:
-        print(i.studio.id)
+        #print(i.studio.id)
         if i.studio.id in subscription.keys():
             result[i]=intervalIntersection(intervalIntersection(merge_intervals(e[i][1]),merge_intervals(e[i][2])),subscription[i.studio.id])
-    print(result)
+    #print(result)
         #s = subscription[i]
         #lst = []
         #for j in s:

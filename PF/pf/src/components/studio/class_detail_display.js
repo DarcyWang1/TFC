@@ -69,7 +69,11 @@ export default class Class_detail_Display extends Component{
         //var imgs = []
         fetch('http://127.0.0.1:8000/Studios/classes/'+cid+'/'+d+'/',requestOptions)
         .then(async reponse=>{
+            if(reponse.status==403){
+                alert("you don't have a scribtion")
+            }else{
             this.check_enrolled()
+            }
         }).catch(error => console.log('error', error))
     }
 
@@ -99,9 +103,9 @@ export default class Class_detail_Display extends Component{
                     {this.props.date}:{this.props.data.name}
                 </button>
                 {this.state.showing?<div>
-                    {this.state.enrolled?<button onClick={()=>this.drop(this.state.date)}>drop</button>:<button onClick={()=>this.enroll(this.state.date)}>enroll</button>}
-                    <button onClick={()=>{this.enroll('all'); this.props.reload()}}>Subscript</button>
-                    <button onClick={()=>{this.drop('all'); this.props.reload()}}>Unsubscript</button>
+                    {this.state.enrolled?<button style={{width:"30%"}} onClick={()=>this.drop(this.state.date)}>drop</button>:<button style={{width:"30%"}} onClick={()=>this.enroll(this.state.date)}>enroll</button>}
+                    <button style={{width:"30%"}} onClick={()=>{this.enroll('all'); this.props.reload()}}>Subscript</button>
+                    <button style={{width:"30%"}} onClick={()=>{this.drop('all'); this.props.reload()}}>Unsubscript</button>
                 </div>:<div></div>}
             </div>
         )

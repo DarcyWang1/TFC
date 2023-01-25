@@ -58,7 +58,8 @@ export default class Class_Displayer extends Component{
     render(){
         return(
             <div>
-                <div  style={{width: '50%', float: 'left'}}>
+                <div  style={{width: '100%', float: 'left'}}>
+                    Classes:
                 {this.state.classes.map(d=>{
                     return(
                         
@@ -69,7 +70,8 @@ export default class Class_Displayer extends Component{
                                     reload = {this.reload}
                                     a={this.state.a}
                                 />
-                                {d[0]}:{d[1].name}{d[1].Class_id}
+                                {//d[0]}:{d[1].name}{d[1].Class_id
+                                }
                             </div>
                         
                     )

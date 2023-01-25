@@ -55,6 +55,12 @@ export default class Studio_Detail extends Component{
         return(
             <div style={{"textAlign": "center"}}>
                 {this.state.d.name?<div>Studio: {this.state.d.name}<br/> Address: {this.state.d.address}<br/>Longitude:{this.state.d.longitude}<br/> Latitude: {this.state.d.latitude}<br/> </div>:<div></div>}
+                {this.state.d.latitude&&this.state.d.longitude? <button onClick={()=>{window.open(
+                "https://www.google.com/maps/dir/?api=1&destination="+this.state.d.latitude+","+this.state.d.longitude
+                )}}>
+                <div>direction
+            </div></button>:<div></div>
+        }
                 <Image_Displayer
                     choosen={this.props.choosen}
                 />

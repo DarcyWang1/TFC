@@ -11,37 +11,48 @@ export default class Disolay_all extends Component{
             data:[],
             index:0,
             choosen:'-1',
-            lat:0,
-            lon:0,
-            d:{}
+            lat:NaN,
+            lon:NaN,
+            d:{},
+            p:false
         }
         this.get_studios=this.get_studios.bind(this)
         this.owner_change=this.owner_change.bind(this)
         this.set_coor=this.set_coor.bind(this)
         this.handleChange=this.handleChange.bind(this)
         this.handleLonChange=this.handleLonChange.bind(this)
-    }
-    componentDidMount(){
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(this.set_coor)
         }
-        this.get_studios()
+    }
+    componentDidMount(){
+        console.log("state")
+        console.log(this.state)
+            //if(navigator.geolocation){
+              //  navigator.geolocation.getCurrentPosition(this.set_coor)
+            //}
+        
+        //this.get_studios()
     }
     set_coor(position){
-        console.log('set position')
-        console.log(position.coords.latitude)
-        console.log(position.coords.longitude)
-        this.setState({['lat']:position.coords.latitude,['lon']:position.coords.longitude})
+        //console.log('set position')
+        //console.log(position.coords.latitude)
+        //console.log(position.coords.latitude)
+        this.setState({['lat']:position.coords.latitude,['lon']:position.coords.longitude},()=>{
+           
+        if(this.state.index==0){
+            this.get_studios()
+        }
+        })
         //this.state.lat=position.coords.latitude
         //this.state.lon=position.coords.longitude
-        console.log(this.state)
-        console.log(this.state.lon)
-        this.get_studios()
+        
     }
     get_studios(){
-        console.log('position')
-        console.log(this.state.lat)
-        console.log(this.state.lon)
+        //console.log("loaded")
+        //console.log('position')
+        //console.log(this.state.lat)
+        //console.log(this.state.lon)
         var lat= this.state.lat;
         var lon = this.state.lon;
         //const [displaying, changedisplaying]=useState()
@@ -58,9 +69,9 @@ export default class Disolay_all extends Component{
         fetch('http://127.0.0.1:8000/Studios//?latitude='+lat+'&longitude='+lon+'&index='+this.state.index,requestOptions)
         .then(async reponse=>{
            const data =  JSON.parse(await reponse.text())
-           console.log("dddddddddddddd")
+           //console.log("dddddddddddddd")
            console.log(data)
-           console.log(this.state === undefined)
+           //console.log(this.state === undefined)
            var updated_data = this.state.data.concat(data)
            this.setState({['data']:updated_data,['index']:updated_data.length})
 
@@ -90,58 +101,61 @@ export default class Disolay_all extends Component{
     
     
     create_studio_list(d){
-        console.log(d)
-        console.log(this.state)
+        //console.log(d)
+        //console.log(this.state)
     }
     owner_change(i){
         //var s = JSON.parse(JSON.stringify(this.state))
         //s.choosen = i;
         //console.log(s)S
         this.setState({['choosen']:i.id,['d']:{lat:i.latitude,lon:i.longitude}})
-        console.log(this.state)
+        //console.log(this.state)
     }
     
     render(){
-        var key="AIzaSyCy3nD1IcmwjbT1K9zRW-mhLzJ7cq2O6t4"
-        var la=0
-        var ln = 0
-        var count=this.state.data.length
-        for (let i = 0; i < count; i++) {
-            let d = this.state.data[i]
-            la=la+Number(d.latitude)
-            ln=ln+Number(d.longitude)
+        
+        //var key="AIzaSyCy3nD1IcmwjbT1K9zRW-mhLzJ7cq2O6t4"
+        //var la=0
+        //var ln = 0
+        //var count=this.state.data.length
+        //for (let i = 0; i < count; i++) {
+          //  let d = this.state.data[i]
+            //la=la+Number(d.latitude)
+            //ln=ln+Number(d.longitude)
 
-        }
-    var center = {
-                lat: Number(this.state.lat),
-                lng: Number(this.state.lon)
-              };
-    console.log(center)
-    const c = {
-        lat: -1,
-        lng: -32.5
-      };
+        //}
+    //var center = {
+      //          lat: Number(this.state.lat),
+        //        lng: Number(this.state.lon)
+          //    };
+    //console.log(center)
+    //const c = {
+      //  lat: -1,
+        //lng: -32.5
+      //};
         return(
             <div style={{width: '100vw',height: '50vh', textAlign: 'center'}}>
-        <LoadScript
-          googleMapsApiKey={key}
-        >
-          <GoogleMap
-            mapContainerStyle={ {width: '100%',height: '100%'}}
-            center={center}
-            zoom={5}
-          >
+        {//<LoadScript
+        //  googleMapsApiKey={key}
+        //>
+          //<GoogleMap
+            //mapContainerStyle={ {width: '100%',height: '100%'}}
+            //center={center}
+            //zoom={5}
+          //>
             
-            { this.state.data.map?this.state.data.map((d)=>{
-                console.log({lat:Number(d.latitude),lng:Number(d.longitude)})
-                return(
-                <MarkerF position={{lat:Number(d.latitude),lng:Number(d.longitude)}} onClick={()=>this.owner_change(d)}/>
+            //{ this.state.data.map?this.state.data.map((d)=>{
+              //  console.log({lat:Number(d.latitude),lng:Number(d.longitude)})
+                //return(
+                //<MarkerF position={{lat:Number(d.latitude),lng:Number(d.longitude)}} onClick={()=>this.owner_change(d)}/>
                 
-                )
-            }):<MarkerF position={center}/>}
+                //)
+            //</div>}):<MarkerF position={center}/>}
             
-          </GoogleMap>
-        </LoadScript>
+          //</GoogleMap>
+        //</LoadScript>
+    }
+        
             {/*
                 <div style={{width:'19%', float: 'left'}}>
                 {this.state.data.map(d=>{
@@ -158,28 +172,55 @@ export default class Disolay_all extends Component{
                     )
                 })}
             </div>*/}<br></br>
-            <div style={{textAlign: "center"}}>
+            <div >
            
-            {this.state.d.lat&&this.state.d.lon? <button onClick={()=>{window.open(
-                "https://www.google.com/maps/dir/?api=1&origin="+this.state.lat+","+this.state.lon+"&destination="+this.state.d.lat+","+this.state.d.lon
-                )}}>
-                find it on google map!
-            </button>:<div></div>}
+            {//this.state.d.lat&&this.state.d.lon? <button onClick={()=>{window.open(
+               // "https://www.google.com/maps/dir/?api=1&origin="+this.state.lat+","+this.state.lon+"&destination="+this.state.d.lat+","+this.state.d.lon
+                //)}}>
+                //</div>find it on google map!
+            //</div></button>:<div></div>
+        }
             </div>
                 <input type="number" onChange={this.handleChange} placeholder="latitude"/><br/>
 
 
                 <input type="number" onChange={this.handleLonChange} placeholder="longitude"/><br/>
-            <button style={{fontSize: 10, width: "80px", height: "50px", padding: "10px"}} onClick={this.get_studios}>load more</button><br/>
-            {this.state.d.lat&&this.state.d.lon? <button onClick={()=>{window.open(
-                "https://www.google.com/maps/dir/?api=1&origin="+this.state.lat+","+this.state.lon+"&destination="+this.state.d.lat+","+this.state.d.lon
-                )}}>
-                find it on google map!
-            </button>:<div></div>}
+            {//this.state.d.lat&&this.state.d.lon? <button onClick={()=>{window.open(
+               // "https://www.google.com/maps/dir/?api=1&origin="+this.state.lat+","+this.state.lon+"&destination="+this.state.d.lat+","+this.state.d.lon
+                //)}}>
+                //</div>find it on google map!
+            //</button>:<div></div>
+        }
             
-            <Link to={"studio_details/"+this.state.choosen+"/0"}> Click on Red Icons, and then click here to view studo details</Link>
-
-            </div>
+            {//<Link to={"studio_details/"+this.state.choosen+"/0"}> Click on Red Icons, and then click here to view studo details</Link>
+    }
+            <table style={{width: "100%"}}>
+            <tr>
+                <th>name</th>
+                <th>location</th>
+                <th></th>
+            </tr>
+        { this.state.data.map?this.state.data.map((d)=>{
+                //console.log({d})
+                return(
+                <tr>
+                    <td>{d.name}</td>
+                    <td>{d.address}</td>
+                    <td>
+                    <Link to={"studio_details/"+d.id+"/0"}>
+                    <button style={{width:'100%'}}>
+                    detail
+                    </button>
+                    </Link>
+                    </td>
+                </tr>
+                )
+            }):<div/>}
+            </table>
+            <br/><button style={{fontSize: 10, width: "80px", height: "50px", padding: "10px"}} onClick={this.get_studios}>load more</button>
+        </div>
+            
+        
             
         );
     }
